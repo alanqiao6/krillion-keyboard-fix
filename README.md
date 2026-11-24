@@ -10,13 +10,22 @@ Free, no app download beyond the Userscripts extension, works on any iPhone.
 2. Open the Userscripts app once and tap **Set Userscripts Directory**. Pick a
    folder in Files, for example *On My iPhone → Userscripts*.
 3. Turn the extension on: **Settings → Apps → Safari → Extensions →
-   Userscripts** → on. Under permissions, allow **krillion.io**.
+   Userscripts** → **Allow Extension** on.
+   Then give it permission for Krillion (this step is easy to miss; without
+   it the script never runs): open **krillion.io** in Safari, tap the page
+   menu at the left of the address bar → **Userscripts** →
+   **Always Allow on This Website**. Afterwards, Settings should show
+   **krillion.io → Allow** under Permissions.
 4. Add the script, either way:
    - **From a file:** save `krillion-keyboard.user.js` (AirDrop, Messages,
      iCloud Drive) into the folder you picked in step 2.
    - **From a link:** open the script's link in Safari, tap the **puzzle-piece
      icon** in the address bar → **Userscripts** → **Install**.
-5. Open **krillion.io** in Safari and play. Nothing else to do.
+5. **Reload** krillion.io in Safari (scripts only load when the page loads)
+   and play. Nothing else to do.
+
+**Check it's running:** on krillion.io, open the page menu → Userscripts.
+"Krillion Keyboard Fix" should be listed and switched on.
 
 ## What it changes (only while the keyboard is open)
 

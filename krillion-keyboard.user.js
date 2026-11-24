@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Krillion Keyboard Fix
 // @namespace    krillion-keyboard-fix
-// @version      1.0.0
+// @version      1.0.1
 // @description  Keeps the Krillion game visible above the iPhone keyboard: fits the board into the space left, shrinks the category card, and makes room for other players' answers.
 // @match        https://krillion.io/*
 // @run-at       document-start
@@ -88,17 +88,25 @@
 
   var typing = false;
   var root = document.documentElement;
+  // Tallest visible height seen with no keyboard up. Newer Safari can shrink
+  // window.innerHeight along with the keyboard, so measure against this.
+  var fullHeight = 0;
 
   function answerBoxFocused() {
     var el = document.activeElement;
-    return !!(el && el.matches && el.matches('.ds-root .ds-input'));
+    return !!(el && el.matches && el.matches('.ds-input'));
   }
 
   function update() {
     var vv = window.visualViewport;
     if (!vv) return;
-    var covered = window.innerHeight - vv.height;
-    var nowTyping = answerBoxFocused() && covered > FULL_KEYBOARD;
+    var focused = answerBoxFocused();
+    if (!focused) {
+      fullHeight = Math.max(vv.height, window.innerHeight);
+    }
+    var baseline = Math.max(fullHeight, window.innerHeight, document.documentElement.clientHeight);
+    var covered = baseline - vv.height;
+    var nowTyping = focused && covered > FULL_KEYBOARD;
 
     if (nowTyping) {
       // Safari may scroll the page while the keyboard is up; offsetTop is
@@ -119,7 +127,9 @@
   }
 
   addStyle();
-  document.addEventListener('DOMContentLoaded', addStyle);
+  document.addEventListener('DOMContentLoaded', function () { addStyle(); update(); });
+  window.addEventListener('resize', function () { if (!typing) update(); });
+  window.addEventListener('orientationchange', function () { fullHeight = 0; });
 
   if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', update);
