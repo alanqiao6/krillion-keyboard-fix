@@ -1,0 +1,270 @@
+<title>Puffer Party Keyboard Fix</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  /* Layout: one narrow column of four tappable steps, sized for a phone held in one hand. */
+  :root {
+    --bg: #eef4f6;
+    --surface: #ffffff;
+    --fg: #0e2230;
+    --muted: #4d6575;
+    --line: #cfdde4;
+    --accent: #0b7a8a;
+    --accent-ink: #ffffff;
+    --chip: #dcedf0;
+    --ok: #1d7a4a;
+    --font-display: "Space Grotesk", "Avenir Next", system-ui, sans-serif;
+    --font-body: "Inter", -apple-system, "Segoe UI", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #08151d; --surface: #0f2230; --fg: #e3eff4; --muted: #93aebb;
+      --line: #1f3a4a; --accent: #3cc3cf; --accent-ink: #04161c; --chip: #13303e;
+      --ok: #5fd39a; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #08151d; --surface: #0f2230; --fg: #e3eff4; --muted: #93aebb;
+    --line: #1f3a4a; --accent: #3cc3cf; --accent-ink: #04161c; --chip: #13303e;
+    --ok: #5fd39a; color-scheme: dark;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .wrap {
+    max-width: 34rem;
+    margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 2rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  header { display: flex; flex-direction: column; gap: .5rem; }
+  .tag {
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--chip);
+    padding: .25rem .55rem;
+    border-radius: 4px;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.75rem, 7vw, 2.3rem);
+    line-height: 1.1;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .lede { margin: 0; color: var(--muted); max-width: 60ch; }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: .5rem 1rem;
+    font-size: .9rem; color: var(--muted); margin: 0; padding: 0; list-style: none;
+  }
+  .meta li::before { content: "•"; margin-right: .4rem; color: var(--accent); }
+
+  ol.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .9rem; counter-reset: step; }
+  .step {
+    counter-increment: step;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 1.1rem 1.1rem 1.2rem;
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    gap: .2rem .85rem;
+  }
+  .step::before {
+    content: counter(step);
+    grid-row: 1 / span 3;
+    width: 2.25rem; height: 2.25rem;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    background: var(--chip);
+    color: var(--accent);
+  }
+  .step h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.15rem;
+    margin: .25rem 0 0;
+    line-height: 1.3;
+  }
+  .step p { margin: .15rem 0 0; color: var(--muted); font-size: .95rem; }
+  .path {
+    font-family: var(--font-mono);
+    font-size: .82rem;
+    color: var(--fg);
+    background: var(--chip);
+    padding: .1rem .35rem;
+    border-radius: 4px;
+    white-space: normal;
+  }
+  .btn {
+    margin-top: .75rem;
+    justify-self: start;
+    display: inline-flex; align-items: center; gap: .5rem;
+    min-height: 44px;
+    padding: .6rem 1.1rem;
+    border-radius: 8px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 600;
+    text-decoration: none;
+    border: 0;
+    font-size: 1rem;
+    font-family: var(--font-body);
+    cursor: pointer;
+  }
+  .btn:focus-visible, .copy:focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; }
+  .btn svg { width: 1em; height: 1em; }
+
+  .check {
+    border-left: 3px solid var(--ok);
+    padding: .75rem 1rem;
+    background: var(--surface);
+    border-radius: 0 8px 8px 0;
+  }
+  .check h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; margin: 0 0 .25rem; }
+  .check p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+  details {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: .85rem 1.1rem;
+  }
+  summary { cursor: pointer; font-weight: 600; }
+  details ul { margin: .6rem 0 0; padding-left: 1.1rem; color: var(--muted); font-size: .95rem; display: grid; gap: .4rem; }
+
+  .share { display: flex; flex-direction: column; gap: .5rem; }
+  .share h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; margin: 0; }
+  .share-row { display: flex; gap: .5rem; align-items: stretch; flex-wrap: wrap; }
+  .share-row code {
+    flex: 1 1 14rem; min-width: 0;
+    font-family: var(--font-mono); font-size: .78rem;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+    padding: .6rem .7rem; overflow-wrap: anywhere; user-select: all;
+  }
+  .copy {
+    min-height: 44px; padding: 0 1rem; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--chip); color: var(--fg);
+    font: 600 .95rem var(--font-body); cursor: pointer;
+  }
+  footer { font-size: .82rem; color: var(--muted); }
+  @media (prefers-reduced-motion: no-preference) {
+    .btn { transition: filter .15s; }
+    .btn:active { filter: brightness(.9); }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="tag">iPhone · Safari · free</span>
+    <h1>Puffer Party Keyboard Fix</h1>
+    <p class="lede">Keeps the category and everyone's answers on screen while you type in Krillion. Four steps, about two minutes, once.</p>
+    <ul class="meta">
+      <li>Do this on your iPhone</li>
+      <li>Use Safari</li>
+    </ul>
+  </header>
+
+  <ol class="steps">
+    <li class="step">
+      <h2>Get the Userscripts app</h2>
+      <p>Free on the App Store. Open it once after it installs, then come back here.</p>
+      <a class="btn" href="https://apps.apple.com/app/userscripts/id1463298887" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+        Open the App Store
+      </a>
+    </li>
+
+    <li class="step">
+      <h2>Turn it on in Settings</h2>
+      <p>Go to <span class="path">Settings → Apps → Safari → Extensions → Userscripts</span> and switch on <strong>Allow Extension</strong>.</p>
+    </li>
+
+    <li class="step">
+      <h2>Install the fix</h2>
+      <p>The button opens the script. Then tap the page menu at the left of the address bar, choose <strong>Userscripts</strong>, and tap <strong>Install</strong>.</p>
+      <a class="btn" href="https://gist.githubusercontent.com/alanqiao6/f224230b228101651bd4273c86362dca/raw/krillion-keyboard.user.js" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18-6-6 6-6"/><path d="m15 6 6 6-6 6"/></svg>
+        Open the script
+      </a>
+    </li>
+
+    <li class="step">
+      <h2>Allow it on Krillion</h2>
+      <p>On krillion.io, open the page menu → <strong>Userscripts</strong> → <strong>Always Allow on This Website</strong>. Then reload the page. This step is the one people miss.</p>
+      <a class="btn" href="https://krillion.io/party" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+        Open Puffer Party
+      </a>
+    </li>
+  </ol>
+
+  <section class="check" aria-labelledby="check-h">
+    <h2 id="check-h">How to tell it's working</h2>
+    <p>In a round, tap the answer box. The category shrinks to one line at the top, the top bar and banner ad step aside, and the answer box sits right on the keyboard.</p>
+  </section>
+
+  <details>
+    <summary>Not working?</summary>
+    <ul>
+      <li>Reload krillion.io. Scripts only load when the page loads.</li>
+      <li>Check <span class="path">Settings → Apps → Safari → Extensions → Userscripts</span>: under Permissions, <strong>krillion.io</strong> should say <strong>Allow</strong>.</li>
+      <li>On krillion.io, open the page menu → Userscripts. <strong>Krillion Keyboard Fix</strong> should be listed and switched on.</li>
+      <li>It only works in Safari. Chrome and other iPhone browsers don't support extensions.</li>
+      <li>To get a newer version later: page menu → Userscripts → <strong>Check for updates</strong>.</li>
+    </ul>
+  </details>
+
+  <section class="share" aria-labelledby="share-h">
+    <h2 id="share-h">Script link</h2>
+    <div class="share-row">
+      <code id="script-url">https://gist.githubusercontent.com/alanqiao6/f224230b228101651bd4273c86362dca/raw/krillion-keyboard.user.js</code>
+      <button class="copy" id="copy-btn" type="button">Copy</button>
+    </div>
+  </section>
+
+  <footer>A fan-made fix, not an official Krillion feature. It only changes how the page looks while you type and doesn't read or send any game data.</footer>
+</div>
+
+<script>
+  (function () {
+    var btn = document.getElementById('copy-btn');
+    var code = document.getElementById('script-url');
+    btn.addEventListener('click', function () {
+      var text = code.textContent.trim();
+      function selectIt() {
+        var r = document.createRange();
+        r.selectNodeContents(code);
+        var s = window.getSelection();
+        s.removeAllRanges();
+        s.addRange(r);
+        btn.textContent = 'Selected';
+      }
+      try {
+        navigator.clipboard.writeText(text).then(function () {
+          btn.textContent = 'Copied';
+          setTimeout(function () { btn.textContent = 'Copy'; }, 1800);
+        }, selectIt);
+      } catch (e) { selectIt(); }
+    });
+  })();
+</script>
