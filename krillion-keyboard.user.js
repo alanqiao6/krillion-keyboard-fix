@@ -6,6 +6,8 @@
 // @match        https://krillion.io/*
 // @run-at       document-start
 // @grant        none
+// @updateURL    https://gist.githubusercontent.com/alanqiao6/f224230b228101651bd4273c86362dca/raw/krillion-keyboard.user.js
+// @downloadURL  https://gist.githubusercontent.com/alanqiao6/f224230b228101651bd4273c86362dca/raw/krillion-keyboard.user.js
 // ==/UserScript==
 
 /*

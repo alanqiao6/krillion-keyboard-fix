@@ -4,6 +4,9 @@ Makes Krillion and Puffer Party playable on iPhone Safari: when you type an
 answer, the category and everyone's answers stay on screen above the keyboard.
 Free, no app download beyond the Userscripts extension, works on any iPhone.
 
+**Install link (open in Safari on your iPhone):**
+https://gist.githubusercontent.com/alanqiao6/f224230b228101651bd4273c86362dca/raw/krillion-keyboard.user.js
+
 ## Install (about 2 minutes, one time)
 
 1. Install **Userscripts** (free) from the App Store.
@@ -19,8 +22,9 @@ Free, no app download beyond the Userscripts extension, works on any iPhone.
 4. Add the script, either way:
    - **From a file:** save `krillion-keyboard.user.js` (AirDrop, Messages,
      iCloud Drive) into the folder you picked in step 2.
-   - **From a link:** open the script's link in Safari, tap the **puzzle-piece
-     icon** in the address bar → **Userscripts** → **Install**.
+   - **From the link (easiest):** open the install link above in Safari, tap
+     the page menu at the left of the address bar → **Userscripts** →
+     **Install**.
 5. **Reload** krillion.io in Safari (scripts only load when the page loads)
    and play. Nothing else to do.
 
@@ -39,8 +43,10 @@ It only changes how the page looks. It does not read or send any game data.
 
 ## Updating
 
-Replace the file in your Userscripts folder with the new version (or install
-from the link again).
+If you installed from the link, Userscripts can check for new versions on its
+own (open the Userscripts menu on any page → **Check for updates**). If you
+installed from a file, replace it with the new version or install from the
+link instead.
 
 ## Notes
 
